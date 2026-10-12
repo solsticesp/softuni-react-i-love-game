@@ -1,10 +1,9 @@
 const url = 'https://mhsmeypslkmpwqonsreg.supabase.co/rest/v1/';
-const apiKey = 'sb_publishable_mMSVJXZcwh4Vr66zFo7QDg_lvJC2G4f';
 
 export default async function request(path = '/', method = 'GET', data = null, opts = {}) {
     const options = {
         headers: {
-            apiKey,
+            apiKey: import.meta.env.VITE_API_KEY
         },
         ...opts
     };
