@@ -6,10 +6,12 @@ import Home from "./components/home/Home";
 
 function App() {
 
+
+
     return (
         <>
             <Header />
-            
+
             <Routes>
                 <Route path="/" element={<Home />} />
                 <Route path="/catalog" element={<Catalog />} />
