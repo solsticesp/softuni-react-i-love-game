@@ -1,9 +1,10 @@
 import { useEffect, useState } from "react";
-import { useParams } from "react-router";
+import { useNavigate, useParams } from "react-router";
 import request from "../../utils/request";
 
 export default function GameDetails() {
     const { gameId } = useParams();
+    const navigate = useNavigate();
     const [game, setGame] = useState({});
 
     useEffect(() => {
@@ -11,6 +12,26 @@ export default function GameDetails() {
             .then(result => setGame(result[0]))
             .catch(err => alert(err))
     }, [gameId]);
+
+    const deleteGameClickHandler = async (e) => {
+        e.preventDefault();
+
+        const confirmed = confirm(`Are you sure you want to delete ${game.title}?`);
+
+        if (!confirmed) {
+            return;
+        }
+
+        try {
+           await request(`/games?id=eq.${gameId}`, 'DELETE');
+           
+           navigate('/catalog');
+        } catch (error) {
+            alert(error);
+        } 
+
+
+    }
 
     return (
         <section id="game-details">
@@ -41,7 +62,7 @@ export default function GameDetails() {
                     <div className="summary-section">
                         <h2>Summary:</h2>
                         <p className="text-summary">
-                           {game.summary}
+                            {game.summary}
                         </p>
                     </div>
                 </div>
@@ -50,7 +71,7 @@ export default function GameDetails() {
                 {/* <!-- Edit/Delete buttons ( Only for creator of this game )  --> */}
                 <div className="buttons">
                     <a href="#" className="button">Edit</a>
-                    <a href="#" className="button">Delete</a>
+                    <a href="#" className="button" onClick={deleteGameClickHandler}>Delete</a>
                 </div>
 
                 <div className="details-comments">
@@ -73,7 +94,7 @@ export default function GameDetails() {
                 <label>Add new comment:</label>
                 <form className="form">
                     <textarea name="comment" placeholder="Comment......"></textarea>
-                    <input className="btn submit" type="submit" value="Add Comment"/>
+                    <input className="btn submit" type="submit" value="Add Comment" />
                 </form>
             </article>
         </section>
